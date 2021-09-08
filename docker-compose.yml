@@ -8,3 +8,24 @@ services:
     restart: unless-stopped
     volumes:
       - ./:/var/www/html
+    depends_on:
+      - redis-master
+      - redis-slave
+
+  redis-master:
+    image: bitnami/redis:latest
+    restart: unless-stopped
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_REPLICATION_MODE: master
+
+  redis-slave:
+    image: bitnami/redis:latest
+    restart: unless-stopped
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_REPLICATION_MODE: slave
+      REDIS_MASTER_HOST: redis-master
+      REDIS_MASTER_PORT_NUMBER: 6379
+    depends_on:
+      - redis-master
