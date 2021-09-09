@@ -1,0 +1,56 @@
+kind: pipeline
+type: docker
+name: check
+
+services:
+  - name: redis-node-0
+    image: bitnami/redis-cluster:latest
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_CLUSTER_CREATOR: yes
+      REDIS_CLUSTER_REPLICAS: 1
+      REDIS_NODES: redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+
+  - name: redis-node-1
+    image: bitnami/redis-cluster:latest
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_NODES: redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+
+  - name: redis-node-2
+    image: bitnami/redis-cluster:latest
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_NODES: redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+
+  - name: redis-node-3
+    image: bitnami/redis-cluster:latest
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_NODES: redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+
+  - name: redis-node-4
+    image: bitnami/redis-cluster:latest
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_NODES: redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+
+  - name: redis-node-5
+    image: bitnami/redis-cluster:latest
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_NODES: redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+
+steps:
+  - name: check
+    image: php:7.4-fpm
+    commands:
+      - mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+      - apt-get update -y
+      - apt-get install -y libicu-dev unzip
+      - yes '' | pecl install redis
+      - docker-php-ext-enable redis
+      - docker-php-ext-install intl
+      - curl -sS https://getcomposer.org/installer | php -- --2 --install-dir=/usr/local/bin --filename=composer
+      - composer update
+      - composer check
