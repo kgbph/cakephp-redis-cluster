@@ -1,5 +1,8 @@
 # Redis cluster cache storage plugin for CakePHP
 
+[![License](https://img.shields.io/github/license/kgbph/cakephp-redis-cluster.svg?style=popout)](https://github.com/kgbph/cakephp-redis-cluster/blob/master/LICENSE)
+[![](https://img.shields.io/github/release/kgbph/cakephp-redis-cluster.svg)](https://github.com/kgbph/cakephp-redis-cluster/releases)
+
 ## Installation
 
 You can install this plugin into your CakePHP application using [composer](https://getcomposer.org).
