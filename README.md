@@ -1,5 +1,6 @@
 # Redis cluster cache storage plugin for CakePHP
 
+[![Build Status](https://cloud.drone.io/api/badges/kgbph/cakephp-redis-cluster/status.svg)](https://cloud.drone.io/kgbph/cakephp-redis-cluster)
 [![License](https://img.shields.io/github/license/kgbph/cakephp-redis-cluster.svg?style=popout)](https://github.com/kgbph/cakephp-redis-cluster/blob/master/LICENSE)
 [![](https://img.shields.io/github/release/kgbph/cakephp-redis-cluster.svg)](https://github.com/kgbph/cakephp-redis-cluster/releases)
 
