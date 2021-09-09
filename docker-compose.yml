@@ -9,23 +9,59 @@ services:
     volumes:
       - ./:/var/www/html
     depends_on:
-      - redis-master
-      - redis-slave
+      - redis-node-0
+      - redis-node-1
+      - redis-node-2
+      - redis-node-3
+      - redis-node-4
+      - redis-node-5
 
-  redis-master:
-    image: bitnami/redis:latest
+  redis-node-0:
+    image: bitnami/redis-cluster:6.2
     restart: unless-stopped
     environment:
       ALLOW_EMPTY_PASSWORD: yes
-      REDIS_REPLICATION_MODE: master
-
-  redis-slave:
-    image: bitnami/redis:latest
-    restart: unless-stopped
-    environment:
-      ALLOW_EMPTY_PASSWORD: yes
-      REDIS_REPLICATION_MODE: slave
-      REDIS_MASTER_HOST: redis-master
-      REDIS_MASTER_PORT_NUMBER: 6379
+      REDIS_CLUSTER_CREATOR: yes
+      REDIS_CLUSTER_REPLICAS: 1
+      REDIS_NODES: redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
     depends_on:
-      - redis-master
+      - redis-node-1
+      - redis-node-2
+      - redis-node-3
+      - redis-node-4
+      - redis-node-5
+
+  redis-node-1:
+    image: bitnami/redis-cluster:6.2
+    restart: unless-stopped
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_NODES: redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+
+  redis-node-2:
+    image: bitnami/redis-cluster:6.2
+    restart: unless-stopped
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_NODES: redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+
+  redis-node-3:
+    image: bitnami/redis-cluster:6.2
+    restart: unless-stopped
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_NODES: redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+
+  redis-node-4:
+    image: bitnami/redis-cluster:6.2
+    restart: unless-stopped
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_NODES: redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+
+  redis-node-5:
+    image: bitnami/redis-cluster:6.2
+    restart: unless-stopped
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_NODES: redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
