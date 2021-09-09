@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Kgbph\RedisClusterEngine\Cache\Engine;
+namespace Kgbph\RedisCluster\Cache\Engine;
 
 use Cake\Cache\Engine\RedisEngine;
 use Cake\Log\Log;
 
 /**
- * Redis cluster storage engine for cache.
+ * Redis cluster cache storage engine
  */
 class RedisClusterEngine extends RedisEngine
 {
@@ -26,12 +26,12 @@ class RedisClusterEngine extends RedisEngine
      * - `groups` List of groups or 'tags' associated to every key stored in this config.
      *    handy for deleting a complete group from cache.
      * - `name` Redis cluster name
-     * - `password` Redis server password.
-     * - `persistent` Connect to the Redis server with a persistent connection
+     * - `nodes` URL or IP to the Redis cluster nodes.
+     * - `password` Redis cluster password.
+     * - `persistent` Connect to the Redis cluster with a persistent connection
      * - `prefix` Prefix appended to all entries. Good for when you need to share a keyspace
      *    with either another cache config or another application.
      * - `read_timeout` Read timeout in seconds (float).
-     * - `servers` URL or IP to the Redis server hosts.
      * - `timeout` Timeout in seconds (float).
      *
      * @var array
@@ -42,11 +42,11 @@ class RedisClusterEngine extends RedisEngine
         'groups' => [],
         'host' => null,
         'name' => null,
+        'nodes' => [],
         'password' => null,
         'persistent' => true,
         'prefix' => 'cake_',
         'read_timeout' => 0,
-        'servers' => ['127.0.0.1:6379'],
         'timeout' => 0,
     ];
 
@@ -60,7 +60,7 @@ class RedisClusterEngine extends RedisEngine
         try {
             $this->_Redis = new \RedisCluster(
                 $this->_config['name'],
-                $this->_config['servers'],
+                $this->_config['nodes'],
                 (float)$this->_config['timeout'],
                 (float)$this->_config['read_timeout'],
                 $this->_config['persistent'],
@@ -90,6 +90,43 @@ class RedisClusterEngine extends RedisEngine
         }
 
         return $connected;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function clear($check)
+    {
+        if ($check) {
+            return true;
+        }
+
+        /** @phpstan-ignore-next-line */
+        $this->_Redis->setOption(\RedisCluster::OPT_SCAN, \RedisCluster::SCAN_RETRY);
+
+        $isAllDeleted = true;
+        $pattern = $this->_config['prefix'] . '*';
+
+        foreach ($this->_Redis->_masters() as $masterNode) {
+            $iterator = null;
+
+            while (true) {
+                /** @phpstan-ignore-next-line */
+                $keys = $this->_Redis->scan($iterator, $masterNode, $pattern);
+
+                /** @phpstan-ignore-next-line */
+                if ($keys === false) {
+                    break;
+                }
+
+                foreach ($keys as $key) {
+                    $isDeleted = ($this->_Redis->del($key) > 0);
+                    $isAllDeleted = $isAllDeleted && $isDeleted;
+                }
+            }
+        }
+
+        return $isAllDeleted;
     }
 
     /**
