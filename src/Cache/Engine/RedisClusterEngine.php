@@ -29,7 +29,7 @@ class RedisClusterEngine extends RedisEngine
      * - `nodes` URL or IP to the Redis cluster nodes.
      * - `password` Redis cluster password.
      * - `persistent` Connect to the Redis cluster with a persistent connection
-     * - `prefix` Prefix appended to all entries. Good for when you need to share a keyspace
+     * - `prefix` Prefix prepended to all entries. Good for when you need to share a keyspace
      *    with either another cache config or another application.
      * - `read_timeout` Read timeout in seconds (float).
      * - `timeout` Timeout in seconds (float).
@@ -40,7 +40,6 @@ class RedisClusterEngine extends RedisEngine
         'duration' => 3600,
         'failover' => null,
         'groups' => [],
-        'host' => null,
         'name' => null,
         'nodes' => [],
         'password' => null,

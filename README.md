@@ -14,6 +14,38 @@ The recommended way to install composer packages is:
 composer require kgbph/cakephp-redis-cluster
 ```
 
+## Usage
+
+Use as a cache engine. See [CakePHP Caching](https://book.cakephp.org/3/en/core-libraries/caching.html).
+
+``` php
+Cache::setConfig('redis', [
+    'className' => 'Kgbph/RedisCluster.RedisCluster',
+    'nodes' => [
+        'redis-node-0:6379',
+        'redis-node-1:6379',
+        'redis-node-2:6379',
+        'redis-node-3:6379',
+        'redis-node-4:6379',
+        'redis-node-5:6379',
+    ],
+]);
+```
+
+## Options
+| Name         | Type           | default | Description                          |
+|--------------|----------------|---------|--------------------------------------|
+| duration     | int            | 3600    | Specify how long items last          |
+| failover     | string \| null | null    | Automatic slave failover mode        |
+| groups       | string[]       | []      | List of associated groups or 'tags'  |
+| name         | string \| null | null    | Redis cluster name                   |
+| nodes        | string[]       | []      | URL or IP of the Redis cluster nodes |
+| password     | string \| null | null    | Redis cluster password               |
+| persistent   | bool           | true    | Use persistent connection            |
+| prefix       | string         | 'cake_' | Prefix prepended to all entries      |
+| read_timeout | float          | 0       | Read timeout in seconds              |
+| timeout      | float          | 0       | Timeout in seconds                   |
+
 ---
 
 ## Code quality checks

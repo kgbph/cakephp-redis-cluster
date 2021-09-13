@@ -96,7 +96,6 @@ class RedisClusterEngineTest extends TestCase
             'duration' => 3600,
             'failover' => null,
             'groups' => [],
-            'host' => null,
             'name' => null,
             'nodes' => $this->redisClusterNodes(),
             'password' => null,
