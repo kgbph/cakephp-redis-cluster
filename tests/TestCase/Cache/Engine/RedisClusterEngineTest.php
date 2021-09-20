@@ -98,7 +98,6 @@ class RedisClusterEngineTest extends TestCase
             'groups' => [],
             'name' => null,
             'nodes' => $this->redisClusterNodes(),
-            'password' => null,
             'persistent' => true,
             'prefix' => 'cake_',
             'read_timeout' => 0,

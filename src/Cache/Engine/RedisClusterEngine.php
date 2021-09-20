@@ -42,7 +42,6 @@ class RedisClusterEngine extends RedisEngine
         'groups' => [],
         'name' => null,
         'nodes' => [],
-        'password' => null,
         'persistent' => true,
         'prefix' => 'cake_',
         'read_timeout' => 0,
@@ -63,7 +62,6 @@ class RedisClusterEngine extends RedisEngine
                 (float)$this->_config['timeout'],
                 (float)$this->_config['read_timeout'],
                 $this->_config['persistent'],
-                $this->_config['password'],
             );
 
             $slaveFailover = \RedisCluster::FAILOVER_NONE;

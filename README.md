@@ -40,7 +40,6 @@ Cache::setConfig('redis', [
 | groups       | string[]       | []      | List of associated groups or 'tags'  |
 | name         | string \| null | null    | Redis cluster name                   |
 | nodes        | string[]       | []      | URL or IP of the Redis cluster nodes |
-| password     | string \| null | null    | Redis cluster password               |
 | persistent   | bool           | true    | Use persistent connection            |
 | prefix       | string         | 'cake_' | Prefix prepended to all entries      |
 | read_timeout | float          | 0       | Read timeout in seconds              |
